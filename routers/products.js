@@ -76,6 +76,7 @@ router.get('/product/admin-dashboard/all-products',async (req, res) => {
 router.put('/product/admin-dashboard',async (req, res) => {
   
     const product = {
+      productApproval,
       productSyscoID
     } = req.body;
   
