@@ -54,14 +54,15 @@ router.get('/product/admin-dashboard',async (req, res) => {
     }
 })
 
-// Get all approval pending products
+// Get all products by approval status
 router.get('/product/admin-dashboard/all-products',async (req, res) => {
 
     try {
       const response = await axios.get(`${API_ROUTE_PATHS.PRODUCTS_BASE_URL}/get-approval-pending-products`, {
         params :{
-            page : req.query.page,
-            size : req.query.size
+          approval_status: req.query.approval_status,
+          page : req.query.page,
+          size : req.query.size
         }
       });
       // Transform the data here if needed
@@ -93,6 +94,22 @@ router.put('/product/admin-dashboard',async (req, res) => {
     }
 });
 
+// Delete product
+router.delete('/product',async (req, res) => {
+
+  try {
+    const response = await axios.delete(`${API_ROUTE_PATHS.PRODUCTS_BASE_URL}`,{
+      params :{
+        id : req.query.id
+      }
+    });
+    // Transform the data here if needed
+    res.status(204).send(response.data);
+  } catch (error) {
+    res.status(error.response.data.code).send(error.response.data);
+  }
+});
+
 //-----------------------------------------------SUPPLIER - DASHBOARD--------------------------------------------
 // Save product
 router.post('/product',async (req, res) => {
@@ -122,8 +139,6 @@ router.put('/product',async (req, res) => {
   
     const product = {
         productDescription,
-        productMeasuringUnit,
-        productName,
         productPrice,
         productStatus
   } = req.body;
@@ -134,22 +149,6 @@ router.put('/product',async (req, res) => {
       {
         params :{
             sysco_id : req.query.sysco_id
-        }
-      });
-      // Transform the data here if needed
-      res.status(204).send(response.data);
-    } catch (error) {
-      res.status(error.response.data.code).send(error.response.data);
-    }
-});
-
-// Delete product
-router.delete('/product',async (req, res) => {
-
-    try {
-      const response = await axios.delete(`${API_ROUTE_PATHS.PRODUCTS_BASE_URL}`,{
-        params :{
-          sysco_id : req.query.sysco_id
         }
       });
       // Transform the data here if needed
