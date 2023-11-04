@@ -4,7 +4,7 @@ const { API_ROUTE_PATHS } = require("../constants/routes");
 
 const router = express.Router();
 
-//-----------------------------------------------CUSTOMER - DASHBOARD-------------------------------------------
+//----------------------------------------------------------CUSTOMER - DASHBOARD-------------------------------------------------------------
 // Save order
 router.post('/order',async (req, res) => {
     const order = {
@@ -36,6 +36,116 @@ router.post('/order',async (req, res) => {
     }
 });
 
+// update-order-status-by-customer
+router.put('/order/customer-dashboard/update',async (req, res) => {
+  
+  const order = {
+    orderStatus
+  } = req.body;
 
+  try {
+    var response = await axios.put(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/update-order-status-by-customer`,
+    order,
+    {
+      params :{
+        id : req.query.id
+      }
+    });
+    // Transform the data here if needed
+    res.status(204).send(response.data);
+  } catch (error) {
+    res.status(error.response.data.code).send(error.response.data);
+  }
+});
+
+// Get order by ID
+router.get('/order/customer-dashboard',async (req, res) => {
+
+  try {
+    const response = await axios.get(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/get-order-details`, {
+      params :{
+        id : req.query.id
+      }
+    });
+    // Transform the data here if needed
+    res.send(response.data);
+  } catch (error) {
+    res.status(error.response.data.code).send(error.response.data);
+  }
+})
+
+// get orders by customer by order status
+router.get('/order/customer-dashboard/all',async (req, res) => {
+
+  try {
+    const response = await axios.get(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/get-orders-by-customer`, {
+      params :{
+        sysco_id : req.query.sysco_id,
+        order_status : req.query.order_status,
+        page : req.query.page,
+        size : req.query.size
+      }
+    });
+    // Transform the data here if needed
+    res.send(response.data);
+  } catch (error) {
+    res.status(error.response.data.code).send(error.response.data);
+  }
+})
+
+//-----------------------------------------------------SUPPLIER - DASHBOARD-----------------------------------------------------------------
+// update supply status by supplier
+router.put('/order/supplier-dashboard/update',async (req, res) => {
+
+  const order = {} = req.body;
+  try {
+    var response = await axios.put(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/update-supply-status-by-supplier`,
+    order,
+    {
+      params :{
+        id:req.query.id
+      }
+    });
+    // Transform the data here if needed
+    res.status(204).send(response.data);
+  } catch (error) {
+    res.status(error.response.data.code).send(error.response.data);
+  }
+});
+
+// Get purchase order by ID
+router.get('/order/supplier-dashboard',async (req, res) => {
+
+  try {
+    const response = await axios.get(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/get-purchase-order-details`, {
+      params :{
+        id : req.query.id
+      }
+    });
+    // Transform the data here if needed
+    res.send(response.data);
+  } catch (error) {
+    res.status(error.response.data.code).send(error.response.data);
+  }
+})
+
+// get purchase orders by supplier by supply status
+router.get('/order/supplier-dashboard/all',async (req, res) => {
+
+  try {
+    const response = await axios.get(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/get-orders-by-supplier`, {
+      params :{
+        sysco_id : req.query.sysco_id,
+        supply_status : req.query.supply_status,
+        page : req.query.page,
+        size : req.query.size
+      }
+    });
+    // Transform the data here if needed
+    res.send(response.data);
+  } catch (error) {
+    res.status(error.response.data.code).send(error.response.data);
+  }
+})
 
 module.exports = router;
