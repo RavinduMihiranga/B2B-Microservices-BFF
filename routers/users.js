@@ -78,7 +78,7 @@ router.put('/user',async (req, res) => {
       }
     });
     // Transform the data here if needed
-    res.status(204).send(response.data);
+    res.send(response.data);
   } catch (error) {
     res.status(error.response.data.code).send(error.response.data);
   }
