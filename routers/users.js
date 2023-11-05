@@ -64,7 +64,9 @@ router.put('/user',async (req, res) => {
     userContactNumber,
     userEmail,
     userFirstName,
-    userLastName
+    userLastName,
+    userPassword,
+    userStatus
   } = req.body;
 
   try {
@@ -104,6 +106,7 @@ router.get('/user/by-role',async (req, res) => {
     const response = await axios.get(`${API_ROUTE_PATHS.USERS_BASE_URL}/get-users-by-userRole`, {
       params :{
         userRole : req.query.userRole,
+        userStatus : req.query.userStatus,
         page : req.query.page,
         size : req.query.size
       }
