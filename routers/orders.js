@@ -2,6 +2,7 @@ const axios = require('axios');
 const express = require('express');
 const { API_ROUTE_PATHS } = require("../constants/routes");
 
+
 const router = express.Router();
 
 //----------------------------------------------------------CUSTOMER - DASHBOARD-------------------------------------------------------------
@@ -67,9 +68,52 @@ router.get('/order/customer-dashboard',async (req, res) => {
         id : req.query.id
       }
     });
-    // Transform the data here if needed
+    
+    // var finalResponse = {
+    //   code : response.data.code,
+    //   message: response.data.message,
+    //   data : {
+    //     orderDetailsDTOList : [
+    //       {
+    //         productSyscoID,
+    //         productName,
+    //         quantity,
+    //         price,
+    //         supplierSyscoID,
+    //         supplierName,
+    //         supplyStatus,
+    //         id,
+    //         supplierEmail,
+    //         supplierContactNumber
+    //       }
+    //     ],
+    //     totalPrice : response.data.data.totalPrice,
+    //     deliveryDate : response.data.data.deliveryDate,
+    //     deliveryAddress : response.data.data.deliveryAddress,
+    //     orderStatus : response.data.data.orderStatus,
+    //     totalProducts : response.data.data.totalProducts,
+    //     id : response.data.data.id,
+    //   }
+    // }
+    // console.log(finalResponse);
+    // array = response.data.data.orderDetailsDTOList;
+
+    // array.forEach(async element => { 
+    //   const userData = await axios.get(`http://localhost:3000/user`,{
+    //     params :{
+    //       sysco_id : element.supplierSyscoID
+    //     }
+    //   });
+
+    //   finalResponse.data.orderDetailsDTOList.supplierEmail = userData.data.data.userEmail;
+    //   finalResponse.data.orderDetailsDTOList.supplierContactNumber = userData.data.data.userContactNumber;
+      
+    // });
+    // // console.log(array);
+    // // Transform the data here if needed
     res.send(response.data);
   } catch (error) {
+    console.log(error);
     res.status(error.response.data.code).send(error.response.data);
   }
 })
