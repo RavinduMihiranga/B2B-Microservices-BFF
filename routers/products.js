@@ -4,8 +4,28 @@ const { API_ROUTE_PATHS } = require("../constants/routes");
 
 const router = express.Router();
 
-// Get product by SyscoID
+// Get all Products according to the filters
 router.get('/product',async (req, res) => {
+
+  try {
+    const response = await axios.get(`${API_ROUTE_PATHS.PRODUCTS_BASE_URL}/get-all-products`, {
+      params :{
+        supplier_sysco_id : req.query.supplier_sysco_id,
+        product_status : req.query.product_status,
+        approval_status: req.query.approval_status,
+        page : req.query.page,
+        size : req.query.size
+      }
+    });
+    // Transform the data here if needed
+    res.send(response.data);
+  } catch (error) {
+    res.status(error.response.data.code).send(error.response.data);
+  }
+})
+
+// Get product by SyscoID
+router.get('/product/get-by-SyscoID',async (req, res) => {
 
     try {
       const response = await axios.get(`${API_ROUTE_PATHS.PRODUCTS_BASE_URL}/get-product-by-sysco-id`, {
@@ -39,7 +59,7 @@ router.get('/product/customer-dashboard',async (req, res) => {
 
 //-----------------------------------------------ADMIN - DASHBOARD--------------------------------------------
 // Get product by ID
-router.get('/product/admin-dashboard',async (req, res) => {
+router.get('/product/get-by-ID',async (req, res) => {
 
     try {
       const response = await axios.get(`${API_ROUTE_PATHS.PRODUCTS_BASE_URL}/get-product-for-admin-dashboard`, {
@@ -71,29 +91,6 @@ router.get('/product/admin-dashboard/all-products',async (req, res) => {
       res.status(error.response.data.code).send(error.response.data);
     }
 })
-
-// update approval
-router.put('/product/admin-dashboard',async (req, res) => {
-  
-    const product = {
-      productApproval,
-      productSyscoID
-    } = req.body;
-  
-    try {
-      var response = await axios.put(`${API_ROUTE_PATHS.PRODUCTS_BASE_URL}/update-approval`,
-      product,
-      {
-        params :{
-          id : req.query.id
-        }
-      });
-      // Transform the data here if needed
-      res.send(response.data);
-    } catch (error) {
-      res.status(error.response.data.code).send(error.response.data);
-    }
-});
 
 // Delete product
 router.delete('/product',async (req, res) => {
@@ -139,9 +136,11 @@ router.post('/product',async (req, res) => {
 router.put('/product',async (req, res) => {
   
     const product = {
-        productDescription,
-        productPrice,
-        productStatus
+      productApproval,
+      productSyscoID,
+      productDescription,
+      productPrice,
+      productStatus
   } = req.body;
   
     try {
@@ -149,7 +148,7 @@ router.put('/product',async (req, res) => {
       product,
       {
         params :{
-            sysco_id : req.query.sysco_id
+            id : req.query.id
         }
       });
       // Transform the data here if needed
