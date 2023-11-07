@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Get all Products according to the filters
 router.get('/product',async (req, res) => {
-
+  
   try {
     const response = await axios.get(`${API_ROUTE_PATHS.PRODUCTS_BASE_URL}/get-all-products`, {
       params :{

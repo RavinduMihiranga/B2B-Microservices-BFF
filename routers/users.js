@@ -29,7 +29,8 @@ router.post('/user/signup',async (req, res) => {
     userFirstName,
     userLastName,
     userPassword,
-    userRole
+    userRole,
+    userStatus
   } = req.body;
   
   try {

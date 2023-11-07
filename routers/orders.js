@@ -41,11 +41,13 @@ router.post('/order',async (req, res) => {
 router.put('/order/customer-dashboard/update',async (req, res) => {
   
   const order = {
+    deliveryAddress,
+    deliveryDate,
     orderStatus
   } = req.body;
 
   try {
-    var response = await axios.put(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/update-order-status-by-customer`,
+    var response = await axios.put(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/update-order-by-customer`,
     order,
     {
       params :{
@@ -141,7 +143,9 @@ router.get('/order/customer-dashboard/all',async (req, res) => {
 // update supply status by supplier
 router.put('/order/supplier-dashboard/update',async (req, res) => {
 
-  const order = {} = req.body;
+  const order = {
+    supplyStatus
+  } = req.body;
   try {
     var response = await axios.put(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/update-supply-status-by-supplier`,
     order,
