@@ -28,7 +28,13 @@ router.post('/order',async (req, res) => {
       } = req.body;
     
     try {
-      const response = await axios.post(`${API_ROUTE_PATHS.ORDERS_BASE_URL}`,order);
+      const response = await axios.post(`${API_ROUTE_PATHS.ORDERS_BASE_URL}`,order,
+      {
+        params :{
+          sessionID : req.query.sessionID
+        }
+      }
+      );
       // Transform the data here if needed
       res.send(response.data);
     } catch (error) {
@@ -195,5 +201,75 @@ router.get('/order/supplier-dashboard/all',async (req, res) => {
     res.status(error.response.data.code).send(error.response.data);
   }
 })
+
+// ------------------------------------------ Cart - Service------------------------------------------
+// Save cart
+router.post('/order/cart',async (req, res) => {
+  const cart = {
+    sessionID,
+    productSyscoID,
+    productName,
+    quantity,
+    price
+    } = req.body;
+  
+  try {
+    const response = await axios.post(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/cart`,cart,
+    {
+      params :{
+        sessionID : req.query.sessionID
+      }
+    });
+    // Transform the data here if needed
+    res.send(response.data);
+  } catch (error) {
+    console.log(error)
+    res.status(409).send("Cart already exists");
+  }
+});
+
+// Get all Cart details
+router.get('/order/cart',async (req, res) => {
+
+  try {
+    const response = await axios.get(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/cart`, {
+      params :{
+        sessionID : req.query.sessionID
+      }
+    });
+    // Transform the data here if needed
+    res.send(response.data);
+  } catch (error) {
+    res.status(error.response.data.code).send(error.response.data);
+  }
+})
+
+// update cart
+router.put('/order/cart',async (req, res) => {
+  const cart = [
+      {
+        productSyscoID,
+        productName,
+        quantity,
+        price
+      }
+    ] = req.body;
+
+  try {
+    var response = await axios.put(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/cart`,
+    cart,
+    {
+      params :{
+        sessionID : req.query.sessionID
+      }
+    });
+    // Transform the data here if needed
+    res.send(response.data);
+  } catch (error) {
+    res.status(error.response.data.code).send(error.response.data);
+  }
+});
+
+
 
 module.exports = router;
