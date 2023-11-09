@@ -38,8 +38,7 @@ router.post('/order',async (req, res) => {
       // Transform the data here if needed
       res.send(response.data);
     } catch (error) {
-      console.log(error)
-      res.status(409).send("Order already exists");
+      res.status(error.response.data.code).send(error.response.data);
     }
 });
 
@@ -212,7 +211,6 @@ router.post('/order/cart',async (req, res) => {
     quantity,
     price
     } = req.body;
-  
   try {
     const response = await axios.post(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/cart`,cart,
     {
@@ -223,8 +221,7 @@ router.post('/order/cart',async (req, res) => {
     // Transform the data here if needed
     res.send(response.data);
   } catch (error) {
-    console.log(error)
-    res.status(409).send("Cart already exists");
+    res.status(error.response.data.code).send(error.response.data);
   }
 });
 
