@@ -243,14 +243,12 @@ router.get('/order/cart',async (req, res) => {
 
 // update cart
 router.put('/order/cart',async (req, res) => {
-  const cart = [
-      {
+  const cart = {
         productSyscoID,
         productName,
         quantity,
         price
-      }
-    ] = req.body;
+      } = req.body;
 
   try {
     var response = await axios.put(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/cart`,
@@ -266,6 +264,23 @@ router.put('/order/cart',async (req, res) => {
     res.status(error.response.data.code).send(error.response.data);
   }
 });
+
+// Delete Cart
+router.delete('/order/cart',async (req, res) => {
+
+  try {
+    const response = await axios.delete(`${API_ROUTE_PATHS.ORDERS_BASE_URL}/cart`, {
+      params :{
+        sessionID : req.query.sessionID,
+        id : req.query.id
+      }
+    });
+    // Transform the data here if needed
+    res.send(response.data);
+  } catch (error) {
+    res.status(error.response.data.code).send(error.response.data);
+  }
+})
 
 
 
